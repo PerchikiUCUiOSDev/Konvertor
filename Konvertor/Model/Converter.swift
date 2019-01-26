@@ -8,10 +8,10 @@
 
 class Converter {
     
-    static func convert(inputCurrency: String, amount: Double, outputCurrency: String, currency: CurrentExchangeRate) -> String {
-        let pricePerDollarForInputCurrency = currency.rates[inputCurrency]!
+    static func convert(inputCurrency: String, amount: Double, outputCurrency: String, currency: [String: Double]) -> String {
+        let pricePerDollarForInputCurrency = currency[inputCurrency]!
         let fullPriceInDollarForInputCurrency = amount / pricePerDollarForInputCurrency
-        let pricePerDollarForOutputCurrency = currency.rates[outputCurrency]!
+        let pricePerDollarForOutputCurrency = currency[outputCurrency]!
         let result = fullPriceInDollarForInputCurrency * pricePerDollarForOutputCurrency
         return String(format: "%.2f", result)
         }

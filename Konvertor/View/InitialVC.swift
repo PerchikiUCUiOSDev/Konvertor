@@ -13,9 +13,10 @@ class InitialVC: UIViewController {
     // MARK: Properties
     
     let controller = CurrencyListController()
-    var exchangeRate: CurrentExchangeRate?
+    var exchangeRate: [String: Double]?
     var currentButtonPressed: UIButton?
     private let cameraController = CameraCaptureController()
+    let CDController = CoreDataController()
     
     // MARK: IBOutlets
     
@@ -122,11 +123,15 @@ class InitialVC: UIViewController {
                 
                 // For Sasha API library:
 //                print(currentExchangeRate)
-                self.exchangeRate = currentExchangeRate
+                self.exchangeRate = currentExchangeRate.rates
+                self.CDController.storeRatesToCoreData(rates: currentExchangeRate.rates)
                 print("Base currency:", currentExchangeRate.base)
                 print("UAH rate:",  currentExchangeRate.rates["UAH"] ?? "N/A")
+            
                 //
             case .Failure(let error as NSError):
+                self.exchangeRate = self.CDController.fetchRatesFromCoreData()
+                
                 print("fail")
                 print(error)
                 let alertController = UIAlertController(title: "Unable to get data ", message: "\(error.localizedDescription)", preferredStyle: .alert)
